@@ -1,10 +1,10 @@
 ```html
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منظومة بيانات الوحدة 31 - شركة أبو قير للأسمدة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بيانات الوحدة 31 - شركة أبو قير للأسمدة</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
@@ -15,13 +15,13 @@
                 extend: {
                     colors: {
                         afc: {
-                            navy: '#0b3c5d',     /* الأزرق الداكن المؤسسي */
-                            green: '#1b8a5a',    /* الأخضر العشبي الخاص بالأسمدة */
+                            navy: '#0b3c5d',     
+                            darkNavy: '#07273d',
+                            green: '#1b8a5a',    
                             lightGreen: '#eef9f3',
-                            accent: '#d9b44a',   /* ذهبي دافئ للتمييز */
-                            bg: '#f4f7f6',       
+                            accent: '#f5d000',   
                             cardBg: '#ffffff',
-                            border: '#d1e3d8'
+                            border: '#cbd5e1'
                         }
                     },
                     fontFamily: {
@@ -32,10 +32,15 @@
         }
     </script>
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: #edeef0;
+            background-color: #cbd5e1;
+            overflow: hidden;
         }
+
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none;
@@ -44,459 +49,276 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-            body {
-                background-color: white !important;
-            }
-            .print-card {
-                box-shadow: none !important;
-                border: 1px solid #ccc !important;
-            }
+
+        .page-view {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .page-view.active {
+            display: flex;
+            animation: fadeIn 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.995); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* مدخلات مدمجة جداً لتقليل الارتفاع */
+        .num-input {
+            text-align: center;
+            font-weight: 800;
+            background-color: #ffffff;
+            border: 1px solid #94a3b8;
+            border-radius: 0.25rem;
+            padding: 0;
+            height: 1.35rem;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+        .num-input:focus {
+            border-color: #1b8a5a;
+            box-shadow: 0 0 0 2px rgba(27, 138, 90, 0.2);
         }
     </style>
 </head>
-<body class="min-h-screen pb-12 text-gray-800">
 
-    <!-- الهيدر الرئيسي - شركة أبو قير للأسمدة -->
-    <header class="bg-afc-navy text-white shadow-lg border-b-4 border-afc-green">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+<body class="bg-slate-300 text-gray-800 flex items-center justify-center p-0 h-full">
+
+    <div class="w-full max-w-5xl h-full h-screen bg-white shadow-2xl border-0 flex flex-col justify-between overflow-hidden relative">
+
+        <!-- ================= الشاشة الشاملة (صفحة واحدة لكل البيانات) ================= -->
+        <div class="page-view active pt-1 px-2 pb-1 flex flex-col justify-between h-full">
             
-            <!-- الشعار واسم الشركة -->
-            <div class="flex items-center gap-4">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl p-1 flex items-center justify-center shadow-md border border-gray-100 shrink-0">
-                    <svg viewBox="0 0 260 260" class="w-full h-full drop-shadow-sm">
-                        <!-- الخلفية البيضاء للشعار -->
-                        <path d="M 130 10 A 115 115 0 0 1 245 125 A 115 115 0 0 1 130 240 A 115 115 0 0 1 15 125 A 115 115 0 0 1 130 10 Z" fill="#ffffff"/>
-                        
-                        <!-- الترس الأزرق الداكن العلوي -->
-                        <path d="M 105 15 L 105 28 L 120 28 L 120 12 L 140 12 L 140 28 L 155 28 L 155 15 C 200 25 235 60 245 105 L 232 105 L 232 120 L 248 120 L 248 140 L 232 140 L 232 155 L 245 155 C 235 200 200 235 155 245 L 155 232 L 140 232 L 140 248 L 120 248 L 120 232 L 105 232 L 105 245 C 60 235 25 200 15 155 L 28 155 L 28 140 L 12 140 L 12 120 L 28 120 L 28 105 L 15 105 C 25 60 60 25 105 15 Z" fill="#000080" stroke="#ffffff" stroke-width="4"/>
-                        <circle cx="130" cy="130" r="110" fill="none" stroke="#ffffff" stroke-width="6"/>
-
-                        <!-- النص الدائري -->
-                        <path d="M 28 130 A 102 102 0 0 1 232 130 Z" fill="#ffffff"/>
-                        <path d="M 38 130 A 92 92 0 0 1 222 130" id="textPathUpper" fill="none" stroke="none"/>
-                        <text font-family="Cairo, sans-serif" font-weight="900" font-size="15" fill="#000080">
-                            <textPath href="#textPathUpper" startOffset="50%" text-anchor="middle">
-                                شركة أَبُوقِير لِلأَسْمِدَةِ وَالصِّنَاعَاتِ الكِيمَاوِيَّةِ
-                            </textPath>
-                        </text>
-
-                        <!-- الرسم الصناعي -->
-                        <g transform="translate(0, -5)">
-                            <polygon points="32,135 110,120 110,140 32,140" fill="#f5d000" stroke="#000080" stroke-width="2"/>
-                            <line x1="70" y1="128" x2="70" y2="140" stroke="#000080" stroke-width="2"/>
-                            <circle cx="115" cy="108" r="18" fill="#000080"/>
-                            <circle cx="115" cy="108" r="14" fill="#ffffff" opacity="0.15"/>
-                            <line x1="115" y1="126" x2="115" y2="138" stroke="#000080" stroke-width="2"/>
-                            <rect x="135" y="95" width="10" height="43" fill="#000080"/>
-                            <rect x="150" y="82" width="14" height="56" fill="#000080" rx="3"/>
-                            <rect x="170" y="90" width="12" height="48" fill="#000080" rx="2"/>
-                            <rect x="188" y="100" width="16" height="38" fill="#000080"/>
-                        </g>
-
-                        <!-- الأرضية الخضراء والشبكة -->
-                        <path d="M 22 138 C 22 195 70 238 130 238 C 190 238 238 195 238 138 Z" fill="#009933" stroke="#000080" stroke-width="3"/>
-                        
-                        <g stroke="#ffffff" stroke-width="1.5" opacity="0.85">
-                            <line x1="130" y1="138" x2="30" y2="225"/>
-                            <line x1="130" y1="138" x2="60" y2="234"/>
-                            <line x1="130" y1="138" x2="95" y2="237"/>
-                            <line x1="130" y1="138" x2="130" y2="238"/>
-                            <line x1="130" y1="138" x2="165" y2="237"/>
-                            <line x1="130" y1="138" x2="200" y2="234"/>
-                            <line x1="130" y1="138" x2="230" y2="225"/>
-
-                            <path d="M 40 155 Q 130 162 220 155" fill="none"/>
-                            <path d="M 32 175 Q 130 185 228 175" fill="none"/>
-                            <path d="M 26 198 Q 130 210 234 198" fill="none"/>
-                            <path d="M 23 220 Q 130 232 237 220" fill="none"/>
-                        </g>
-
-                        <path d="M 55 185 L 205 185 L 195 176 L 65 176 Z" fill="#f5d000" stroke="#000080" stroke-width="1.5"/>
-
-                        <g transform="translate(0, -5)">
-                            <polygon points="124,175 136,175 134,142 126,142" fill="#f5d000" stroke="#000080" stroke-width="1.5"/>
-                            <rect x="122" y="140" width="16" height="5" fill="#f5d000" stroke="#000080" stroke-width="1.5"/>
-                            <polygon points="120,136 140,136 130,130" fill="#d9534f"/>
-                            
-                            <line x1="120" y1="132" x2="108" y2="130" stroke="#cc0000" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="120" y1="136" x2="105" y2="136" stroke="#cc0000" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="140" y1="132" x2="152" y2="130" stroke="#cc0000" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="140" y1="136" x2="155" y2="136" stroke="#cc0000" stroke-width="2.5" stroke-linecap="round"/>
-                        </g>
-
-                        <text x="130" y="215" font-family="Cairo, sans-serif" font-weight="900" font-size="18" fill="#000000" text-anchor="middle" stroke="#ffffff" stroke-width="0.8">
-                            الإسـكـنـدريـة
-                        </text>
-                    </svg>
+            <!-- الهيدر المدمج (مرفوع للأعلى تماماً) -->
+            <header class="bg-afc-navy text-white rounded px-2 py-1 shadow-sm border-b-2 border-afc-green flex items-center justify-between gap-1 shrink-0 mb-1">
+                <div class="flex items-center gap-1.5">
+                    <button onclick="setAllToZero()" title="تصفير جميع القيم" class="bg-red-600 hover:bg-red-700 active:scale-95 text-white font-black px-2 py-0.5 rounded transition shadow flex items-center gap-1 text-[11px] shrink-0">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>تصفير</span>
+                    </button>
+                    <span class="bg-afc-green text-white text-[10px] px-2 py-0.5 rounded font-black">شاملة (12H & 24H)</span>
                 </div>
-                <div>
-                    <h1 class="text-2xl sm:text-3xl font-black text-white tracking-wide">
-                        شركة أبو قير للأسمدة والصناعات الكيماوية
+
+                <div class="flex items-center gap-1 text-right">
+                    <h1 class="text-base font-black text-white leading-none">
+                        الوحدة 31 - لوحة البيانات الموحدة
                     </h1>
-                    <p class="text-afc-accent font-bold text-sm sm:text-base">
-                        Abu Qir Fertilizers and Chemical Industries Co.
-                    </p>
                 </div>
-            </div>
+            </header>
 
-        </div>
-    </header>
-
-    <!-- شريط الأدوات الرئيسي -->
-    <div class="max-w-6xl mx-auto px-4 mt-6 flex flex-wrap items-center justify-between gap-3 no-print">
-        <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200 flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="font-bold text-afc-navy text-sm">حالة النظام: يتم الحفظ ومزامنة الرابط تلقائياً</span>
-        </div>
-
-        <div class="flex items-center gap-2 flex-wrap">
-            <!-- زر مشاركة البيانات الحالية -->
-            <button onclick="shareDataLink()" 
-                    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-sm flex items-center gap-2 text-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 100-5.367 3 3 0 000 5.367zm0 8a3 3 0 100-5.367 3 3 0 000 5.367z"></path></svg>
-                مشاركة البيانات الحالية
-            </button>
-            <button onclick="window.print()" 
-                    class="bg-afc-navy hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-sm flex items-center gap-2 text-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                طباعة التقرير
-            </button>
-            <button onclick="setAllToZero()" 
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-sm flex items-center gap-2 text-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                تصفير جميع القيم
-            </button>
-            <button id="undoBtn" onclick="restorePreviousState()" disabled
-                    class="bg-gray-400 cursor-not-allowed text-white font-bold py-2 px-4 rounded-xl transition-all shadow-sm flex items-center gap-2 text-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
-                استعادة الحالة السابقة
-            </button>
-        </div>
-    </div>
-
-    <!-- كارت اللوحة الرئيسي (Dashboard Card) -->
-    <main class="max-w-6xl mx-auto px-4 mt-6">
-        <div class="bg-white rounded-3xl shadow-xl border border-afc-border p-6 sm:p-8 print-card">
-            
-            <!-- عنوان السجل -->
-            <div class="border-b-2 border-afc-green/30 pb-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-afc-navy">
-                        سجل قراءات: <span class="text-afc-green">بيانات الوحده 31</span>
-                    </h2>
-                    <p class="text-gray-500 text-sm mt-1">يمكنك تعديل أي رقم أو نسبة بالجدول وستتم التحديثات تلقائياً</p>
-                </div>
-                <div class="bg-afc-lightGreen border border-afc-green/30 px-4 py-1.5 rounded-lg text-afc-green font-bold text-sm">
-                    قسم التشغيل والمتابعة
-                </div>
-            </div>
-
-            <!-- الشبكة الرئيسية للبيانات (Grid) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- محتوى الشاشة: 3 أعمدة مدمجة تظهر بالكامل بدون سكرول -->
+            <div class="grid grid-cols-3 gap-1.5 items-start flex-1 overflow-hidden">
                 
-                <!-- العمود الأول: بيانات الأمونيا والحامض والتركيز -->
-                <div class="space-y-3.5">
-                    <h3 class="text-lg font-bold text-afc-navy border-r-4 border-afc-green pr-3 mb-2">
-                        التحاليل والقياسات الأساسية
-                    </h3>
+                <!-- العمود الأول: التحاليل والقياسات الأساسية -->
+                <div class="bg-emerald-50/90 p-1.5 rounded border border-emerald-200 space-y-1">
+                    <div class="flex items-center justify-between border-r-2 border-afc-green pr-1">
+                        <h3 class="text-[10px] font-black text-afc-navy">التحاليل والقياسات</h3>
+                        <span class="text-[9px] text-afc-green font-bold">12H</span>
+                    </div>
 
-                    <!-- حرارة الأمونيا -->
-                    <div class="flex items-center justify-between bg-afc-lightGreen p-3 rounded-2xl border border-afc-border">
+                    <div class="flex items-center justify-between bg-white px-1.5 py-0.5 rounded border border-emerald-100 text-[10px]">
                         <span class="font-bold text-afc-navy">حرارة الأمونيا</span>
                         <div class="flex items-center dir-ltr">
-                            <span class="text-afc-navy font-bold mr-1">cº</span>
-                            <input type="number" step="any" id="tempAmmonia" value="0" 
-                                   class="w-24 text-center font-extrabold text-afc-navy bg-white border-2 border-afc-green/40 rounded-xl focus:outline-none focus:border-afc-green py-1 shadow-sm">
+                            <span class="text-afc-navy font-bold text-[9px] mr-0.5">cº</span>
+                            <input type="number" step="any" id="tempAmmonia" value="" placeholder="0" class="w-11 num-input text-[11px]">
                         </div>
                     </div>
 
-                    <!-- كثافة الأمونيا -->
-                    <div class="flex items-center justify-between bg-afc-lightGreen p-3 rounded-2xl border border-afc-border">
+                    <div class="flex items-center justify-between bg-white px-1.5 py-0.5 rounded border border-emerald-100 text-[10px]">
                         <span class="font-bold text-afc-navy">كثافة الأمونيا</span>
                         <div class="flex items-center dir-ltr">
-                            <span class="text-afc-navy font-bold mr-1">cº</span>
-                            <input type="number" step="any" id="densityAmmonia" value="0" 
-                                   class="w-24 text-center font-extrabold text-afc-navy bg-white border-2 border-afc-green/40 rounded-xl focus:outline-none focus:border-afc-green py-1 shadow-sm">
+                            <span class="text-afc-navy font-bold text-[9px] mr-0.5">cº</span>
+                            <input type="number" step="any" id="densityAmmonia" value="" placeholder="0" class="w-11 num-input text-[11px]">
                         </div>
                     </div>
 
-                    <!-- حرارة الحامض -->
-                    <div class="flex items-center justify-between bg-afc-lightGreen p-3 rounded-2xl border border-afc-border">
+                    <div class="flex items-center justify-between bg-white px-1.5 py-0.5 rounded border border-emerald-100 text-[10px]">
                         <span class="font-bold text-afc-navy">حرارة الحامض</span>
                         <div class="flex items-center dir-ltr">
-                            <span class="text-afc-navy font-bold mr-1">cº</span>
-                            <input type="number" step="any" id="tempAcid" value="0" 
-                                   class="w-24 text-center font-extrabold text-afc-navy bg-white border-2 border-afc-green/40 rounded-xl focus:outline-none focus:border-afc-green py-1 shadow-sm">
+                            <span class="text-afc-navy font-bold text-[9px] mr-0.5">cº</span>
+                            <input type="number" step="any" id="tempAcid" value="" placeholder="0" class="w-11 num-input text-[11px]">
                         </div>
                     </div>
 
-                    <!-- تركيز الحامض -->
-                    <div class="flex items-center justify-between bg-afc-lightGreen p-3 rounded-2xl border border-afc-border">
+                    <div class="flex items-center justify-between bg-white px-1.5 py-0.5 rounded border border-emerald-100 text-[10px]">
                         <span class="font-bold text-afc-navy">تركيز الحامض</span>
                         <div class="flex items-center dir-ltr">
-                            <span class="text-afc-navy font-bold mr-1">cº</span>
-                            <input type="number" step="any" id="concAcid" value="0" 
-                                   class="w-24 text-center font-extrabold text-afc-navy bg-white border-2 border-afc-green/40 rounded-xl focus:outline-none focus:border-afc-green py-1 shadow-sm">
+                            <span class="text-afc-navy font-bold text-[9px] mr-0.5">cº</span>
+                            <input type="number" step="any" id="concAcid" value="" placeholder="0" class="w-11 num-input text-[11px]">
                         </div>
                     </div>
 
-                    <!-- كثافة الحامض -->
-                    <div class="flex items-center justify-between bg-afc-lightGreen p-3 rounded-2xl border border-afc-border">
+                    <div class="flex items-center justify-between bg-white px-1.5 py-0.5 rounded border border-emerald-100 text-[10px]">
                         <span class="font-bold text-afc-navy">كثافة الحامض</span>
                         <div class="flex items-center dir-ltr">
-                            <input type="number" step="any" id="densityAcid" value="0" 
-                                   class="w-28 text-center font-extrabold text-afc-navy bg-white border-2 border-afc-green/40 rounded-xl focus:outline-none focus:border-afc-green py-1 shadow-sm">
+                            <input type="number" step="any" id="densityAcid" value="" placeholder="0" class="w-12 num-input text-[11px]">
                         </div>
                     </div>
 
-                    <!-- متوسط التركيز -->
-                    <div class="flex items-center justify-between bg-afc-lightGreen p-3 rounded-2xl border border-afc-border">
-                        <span class="font-bold text-afc-navy">متوسط التركيز</span>
+                    <div class="flex items-center justify-between bg-emerald-100/70 px-1.5 py-0.5 rounded border border-emerald-300 text-[10px]">
+                        <span class="font-black text-afc-green">متوسط التركيز</span>
                         <div class="flex items-center dir-ltr">
-                            <span class="text-afc-green font-bold ml-1">%</span>
-                            <input type="number" step="any" id="avgConc" value="0" 
-                                   class="w-24 text-center font-extrabold text-afc-green bg-white border-2 border-afc-green/40 rounded-xl focus:outline-none focus:border-afc-green py-1 shadow-sm">
+                            <span class="text-afc-green font-bold text-[9px] ml-0.5">%</span>
+                            <input type="number" step="any" id="avgConc" value="" placeholder="0" class="w-11 num-input text-[11px] text-afc-green border-afc-green">
                         </div>
                     </div>
 
+                    <!-- مؤشرات نا والأحمال -->
+                    <div class="bg-amber-50/90 p-1 rounded border border-amber-200 space-y-0.5 mt-1">
+                        <div class="flex items-center justify-between border-r-2 border-amber-500 pr-1">
+                            <h3 class="text-[10px] font-black text-amber-900">مؤشرات نا والأحمال</h3>
+                        </div>
+                        <div class="flex items-center justify-between bg-white px-1 py-0.5 rounded border border-amber-200 text-[10px]">
+                            <span class="text-amber-800 font-black">31Li509=</span>
+                            <input type="number" step="any" id="li509Val" value="" placeholder="0" class="w-11 num-input text-[11px] text-amber-900">
+                        </div>
+                        <div class="flex items-center justify-between bg-white px-1 py-0.5 rounded border border-amber-200 text-[10px]">
+                            <span class="text-amber-800 font-black">22Li501=</span>
+                            <input type="number" step="any" id="li501Val" value="" placeholder="0" class="w-11 num-input text-[11px] text-amber-900">
+                        </div>
+                        <div class="flex items-center justify-between bg-white px-1 py-0.5 rounded border border-amber-200 text-[10px]">
+                            <span class="text-amber-800 font-black">22Li503=</span>
+                            <input type="number" step="any" id="li503Val" value="" placeholder="0" class="w-11 num-input text-[11px] text-amber-900">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- العمود الثاني: النسب والأحمال -->
-                <div class="space-y-3.5">
-                    <h3 class="text-lg font-bold text-afc-navy border-r-4 border-afc-green pr-3 mb-2">
-                        مؤشرات Li والأحمال
-                    </h3>
-
-                    <!-- 31Li509 -->
-                    <div class="flex items-center justify-between bg-amber-50 p-3 rounded-2xl border border-amber-200 font-bold">
-                        <span class="text-amber-800 font-extrabold">31Li509 =</span>
-                        <div class="flex items-center dir-ltr">
-                            <input type="number" step="any" id="li509Val" value="0" 
-                                   class="w-24 text-center font-extrabold text-amber-800 bg-white border-2 border-amber-300 rounded-xl focus:outline-none focus:border-amber-600 py-1 shadow-sm">
-                            <span class="ml-1 font-bold text-amber-800">%</span>
-                        </div>
+                <!-- العمود الثاني: إنتاج المصنع (12 ساعة) -->
+                <div class="bg-slate-50 p-1.5 rounded border border-slate-300 space-y-1">
+                    <div class="flex items-center justify-between border-r-2 border-afc-navy pr-1">
+                        <h3 class="text-[10px] font-black text-afc-navy">إنتاج 12 ساعة</h3>
+                        <span class="bg-afc-navy text-white text-[8px] px-1 rounded font-black">12H</span>
                     </div>
 
-                    <!-- 22Li501 -->
-                    <div class="flex items-center justify-between bg-amber-50 p-3 rounded-2xl border border-amber-200 font-bold">
-                        <span class="text-amber-800 font-extrabold">22Li501 =</span>
-                        <div class="flex items-center dir-ltr">
-                            <input type="number" step="any" id="li501Val" value="0" 
-                                   class="w-24 text-center font-extrabold text-amber-800 bg-white border-2 border-amber-300 rounded-xl focus:outline-none focus:border-amber-600 py-1 shadow-sm">
-                            <span class="ml-1 font-bold text-amber-800">%</span>
-                        </div>
-                    </div>
-
-                    <!-- 22Li503 -->
-                    <div class="flex items-center justify-between bg-amber-50 p-3 rounded-2xl border border-amber-200 font-bold">
-                        <span class="text-amber-800 font-extrabold">22Li503 =</span>
-                        <div class="flex items-center dir-ltr">
-                            <input type="number" step="any" id="li503Val" value="0" 
-                                   class="w-24 text-center font-extrabold text-amber-800 bg-white border-2 border-amber-300 rounded-xl focus:outline-none focus:border-amber-600 py-1 shadow-sm">
-                            <span class="ml-1 font-bold text-amber-800">%</span>
-                        </div>
-                    </div>
-
-                    <!-- الأحمال Load 1 & Load 2 -->
-                    <div class="space-y-2 pt-1">
-                        <div class="flex items-center justify-between bg-teal-50 p-3 rounded-2xl border border-teal-200 font-bold">
-                            <span class="text-teal-800 italic">Load1 =</span>
-                            <div class="flex items-center gap-1 dir-ltr">
-                                <input type="number" step="any" id="load1Pct" value="0" 
-                                       class="w-16 text-center font-bold text-teal-800 bg-white border border-teal-300 rounded-lg py-0.5">
-                                <span class="text-teal-800 text-sm">% /</span>
-                                <input type="number" step="any" id="load1Temp" value="0" 
-                                       class="w-16 text-center font-bold text-teal-800 bg-white border border-teal-300 rounded-lg py-0.5">
-                                <span class="text-teal-800 text-sm">cº</span>
+                    <!-- FQ401 (12H) -->
+                    <div class="bg-white p-1 rounded border border-slate-200 text-center">
+                        <div class="font-black text-afc-navy italic text-[10px] mb-0.5">FQ401 (12H)</div>
+                        <div class="grid grid-cols-2 gap-1 mb-0.5">
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">الحالية</div>
+                                <input type="number" id="fq401_12_1" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-red-200">
+                            </div>
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">السباقة</div>
+                                <input type="number" id="fq401_12_2" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-red-200">
                             </div>
                         </div>
-
-                        <div class="flex items-center justify-between bg-teal-50 p-3 rounded-2xl border border-teal-200 font-bold">
-                            <span class="text-teal-800 italic">Load2 =</span>
-                            <div class="flex items-center gap-1 dir-ltr">
-                                <input type="number" step="any" id="load2Pct" value="0" 
-                                       class="w-16 text-center font-bold text-teal-800 bg-white border border-teal-300 rounded-lg py-0.5">
-                                <span class="text-teal-800 text-sm">% /</span>
-                                <input type="number" step="any" id="load2Temp" value="0" 
-                                       class="w-16 text-center font-bold text-teal-800 bg-white border border-teal-300 rounded-lg py-0.5">
-                                <span class="text-teal-800 text-sm">cº</span>
-                            </div>
+                        <div class="dir-ltr text-[10px] bg-red-50 p-0.5 rounded border border-red-100 flex items-center justify-between">
+                            <span class="text-[9px] font-bold text-afc-green">الإنتاج:</span>
+                            <div><span id="fq401_12_res" class="text-xs font-black text-red-600">0</span> <span class="text-[9px] text-red-600">m³</span></div>
                         </div>
                     </div>
 
+                    <!-- FQ402 (12H) -->
+                    <div class="bg-white p-1 rounded border border-slate-200 text-center">
+                        <div class="font-black text-afc-navy italic text-[10px] mb-0.5">FQ402 (12H)</div>
+                        <div class="grid grid-cols-2 gap-1 mb-0.5">
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">الحالية</div>
+                                <input type="number" id="fq402_12_1" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-red-200">
+                            </div>
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">السباقة</div>
+                                <input type="number" id="fq402_12_2" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-red-200">
+                            </div>
+                        </div>
+                        <div class="dir-ltr text-[10px] bg-red-50 p-0.5 rounded border border-red-100 flex items-center justify-between">
+                            <span class="text-[9px] font-bold text-afc-green">الإنتاج:</span>
+                            <div><span id="fq402_12_res" class="text-xs font-black text-red-600">0</span> <span class="text-[9px] text-red-600">m³</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- العمود الثالث: إنتاج المصنع (24 ساعة) -->
+                <div class="bg-blue-50/50 p-1.5 rounded border border-blue-200 space-y-1">
+                    <div class="flex items-center justify-between border-r-2 border-blue-600 pr-1">
+                        <h3 class="text-[10px] font-black text-afc-navy">إنتاج 24 ساعة</h3>
+                        <span class="bg-blue-600 text-white text-[8px] px-1 rounded font-black">24H</span>
+                    </div>
+
+                    <!-- FQ401 (24H) -->
+                    <div class="bg-white p-1 rounded border border-blue-200 text-center">
+                        <div class="font-black text-afc-navy italic text-[10px] mb-0.5">FQ401 (24H)</div>
+                        <div class="grid grid-cols-2 gap-1 mb-0.5">
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">الحالية</div>
+                                <input type="number" id="fq401_24_1" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-blue-200">
+                            </div>
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">السابقة</div>
+                                <input type="number" id="fq401_24_2" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-blue-200">
+                            </div>
+                        </div>
+                        <div class="dir-ltr text-[10px] bg-blue-50 p-0.5 rounded border border-blue-100 flex items-center justify-between">
+                            <span class="text-[9px] font-bold text-blue-800">الإنتاج:</span>
+                            <div><span id="fq401_24_res" class="text-xs font-black text-red-600">0</span> <span class="text-[9px] text-red-600">m³</span></div>
+                        </div>
+                    </div>
+
+                    <!-- FQ402 (24H) -->
+                    <div class="bg-white p-1 rounded border border-blue-200 text-center">
+                        <div class="font-black text-afc-navy italic text-[10px] mb-0.5">FQ402 (24H)</div>
+                        <div class="grid grid-cols-2 gap-1 mb-0.5">
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">الحالية</div>
+                                <input type="number" id="fq402_24_1" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-blue-200">
+                            </div>
+                            <div>
+                                <div class="text-[8px] text-gray-500 font-bold">السابقة</div>
+                                <input type="number" id="fq402_24_2" value="" placeholder="0" oninput="calculateAll()" class="w-full num-input text-[11px] text-red-600 border-blue-200">
+                            </div>
+                        </div>
+                        <div class="dir-ltr text-[10px] bg-blue-50 p-0.5 rounded border border-blue-100 flex items-center justify-between">
+                            <span class="text-[9px] font-bold text-blue-800">الإنتاج:</span>
+                            <div><span id="fq402_24_res" class="text-xs font-black text-red-600">0</span> <span class="text-[9px] text-red-600">m³</span></div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
-            <!-- ================= إنتاج المصنع في 12 ساعة ================= -->
-            <div class="mt-10 pt-8 border-t-2 border-afc-green/20">
-                <div class="flex items-center justify-center gap-2 mb-6">
-                    <span class="bg-afc-navy text-white text-xs px-3 py-1 rounded-full font-bold">12H</span>
-                    <h3 class="text-xl sm:text-2xl font-black text-afc-navy text-center">
-                        إنتاج المصنع في 12 ساعة
-                    </h3>
+            <!-- الفوتر السفلي -->
+            <footer class="pt-0.5 mt-0.5 border-t border-gray-200 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[9px] text-gray-600 font-bold">الوحدة 31 - لوحة التحكم الموحدة</span>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <!-- 12H - FQ401 -->
-                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-center shadow-sm hover:shadow-md transition-shadow">
-                        <h4 class="text-2xl font-black text-afc-navy italic mb-4">FQ401 (12H)</h4>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="text-xs text-gray-500 font-bold">القراءة الحالية</div>
-                            <input type="number" id="fq401_12_1" value="0" oninput="calculateFQ401_12()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="text-xs text-gray-500 font-bold mt-1">القراءة السابقة</div>
-                            <input type="number" id="fq401_12_2" value="0" oninput="calculateFQ401_12()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="w-56 h-1 bg-afc-green my-3 rounded-full"></div>
-
-                            <div class="text-xs font-bold text-afc-green">الإنتاج خلال 12 ساعة</div>
-                            <div class="flex items-center justify-center gap-2 dir-ltr mt-1">
-                                <span id="fq401_12_res" class="text-3xl font-black text-red-600">0</span>
-                                <span class="text-lg font-bold text-red-600">m³</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 12H - FQ402 -->
-                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-center shadow-sm hover:shadow-md transition-shadow">
-                        <h4 class="text-2xl font-black text-afc-navy italic mb-4">FQ402 (12H)</h4>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="text-xs text-gray-500 font-bold">القراءة الحالية</div>
-                            <input type="number" id="fq402_12_1" value="0" oninput="calculateFQ402_12()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="text-xs text-gray-500 font-bold mt-1">القراءة السابقة</div>
-                            <input type="number" id="fq402_12_2" value="0" oninput="calculateFQ402_12()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="w-56 h-1 bg-afc-green my-3 rounded-full"></div>
-
-                            <div class="text-xs font-bold text-afc-green">الإنتاج خلال 12 ساعة</div>
-                            <div class="flex items-center justify-center gap-2 dir-ltr mt-1">
-                                <span id="fq402_12_res" class="text-3xl font-black text-red-600">0</span>
-                                <span class="text-lg font-bold text-red-600">m³</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- ================= إنتاج المصنع في 24 ساعة ================= -->
-            <div class="mt-10 pt-8 border-t-2 border-afc-green/20">
-                <div class="flex items-center justify-center gap-2 mb-6">
-                    <span class="bg-afc-green text-white text-xs px-3 py-1 rounded-full font-bold">24H</span>
-                    <h3 class="text-xl sm:text-2xl font-black text-afc-navy text-center">
-                        إنتاج المصنع في 24 ساعة
-                    </h3>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <!-- 24H - FQ401 -->
-                    <div class="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-200 text-center shadow-sm hover:shadow-md transition-shadow">
-                        <h4 class="text-2xl font-black text-afc-navy italic mb-4">FQ401 (24H)</h4>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="text-xs text-gray-500 font-bold">القراءة الحالية (24 ساعة)</div>
-                            <input type="number" id="fq401_24_1" value="0" oninput="calculateFQ401_24()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="text-xs text-gray-500 font-bold mt-1">القراءة السابقة (بداية الـ 24 ساعة)</div>
-                            <input type="number" id="fq401_24_2" value="0" oninput="calculateFQ401_24()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="w-56 h-1 bg-afc-navy my-3 rounded-full"></div>
-
-                            <div class="text-xs font-bold text-afc-navy">إجمالي الإنتاج خلال 24 ساعة</div>
-                            <div class="flex items-center justify-center gap-2 dir-ltr mt-1">
-                                <span id="fq401_24_res" class="text-3xl font-black text-red-600">0</span>
-                                <span class="text-lg font-bold text-red-600">m³</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 24H - FQ402 -->
-                    <div class="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-200 text-center shadow-sm hover:shadow-md transition-shadow">
-                        <h4 class="text-2xl font-black text-afc-navy italic mb-4">FQ402 (24H)</h4>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="text-xs text-gray-500 font-bold">القراءة الحالية (24 ساعة)</div>
-                            <input type="number" id="fq402_24_1" value="0" oninput="calculateFQ402_24()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="text-xs text-gray-500 font-bold mt-1">القراءة السابقة (بداية الـ 24 ساعة)</div>
-                            <input type="number" id="fq402_24_2" value="0" oninput="calculateFQ402_24()"
-                                   class="w-48 text-center text-xl font-extrabold text-red-600 bg-white border-2 border-red-200 rounded-xl p-2 shadow-inner focus:outline-none focus:border-red-500">
-                            
-                            <div class="w-56 h-1 bg-afc-navy my-3 rounded-full"></div>
-
-                            <div class="text-xs font-bold text-afc-navy">إجمالي الإنتاج خلال 24 ساعة</div>
-                            <div class="flex items-center justify-center gap-2 dir-ltr mt-1">
-                                <span id="fq402_24_res" class="text-3xl font-black text-red-600">0</span>
-                                <span class="text-lg font-bold text-red-600">m³</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- الفوتر الداخلي -->
-            <div class="mt-12 pt-4 border-t border-gray-200 text-center flex items-center justify-center text-xs text-gray-500">
-                <div>منظومة متابعة بيانات الإنتاج والوحدات - شركة أبو قير للأسمدة والصناعات الكيماوية (الأسكندرية)</div>
-            </div>
-
+                <span class="text-[9px] text-gray-500 font-bold">شركة أبو قير للأسمدة</span>
+            </footer>
         </div>
-    </main>
 
-    <!-- Script الحسابات والتفاعلات وحفظ البيانات والمشاركة -->
+    </div>
+
     <script>
         const inputIds = [
             'tempAmmonia', 'densityAmmonia', 'tempAcid', 'concAcid', 'densityAcid', 'avgConc',
             'li509Val', 'li501Val', 'li503Val',
-            'load1Pct', 'load1Temp', 'load2Pct', 'load2Temp',
             'fq401_12_1', 'fq401_12_2', 'fq402_12_1', 'fq402_12_2',
             'fq401_24_1', 'fq401_24_2', 'fq402_24_1', 'fq402_24_2'
         ];
 
-        let previousBackup = null;
-
-        function calculateFQ401_12() {
-            const val1 = parseFloat(document.getElementById('fq401_12_1').value) || 0;
-            const val2 = parseFloat(document.getElementById('fq401_12_2').value) || 0;
-            document.getElementById('fq401_12_res').innerText = Math.abs(val1 - val2);
-        }
-
-        function calculateFQ402_12() {
-            const val1 = parseFloat(document.getElementById('fq402_12_1').value) || 0;
-            const val2 = parseFloat(document.getElementById('fq402_12_2').value) || 0;
-            document.getElementById('fq402_12_res').innerText = Math.abs(val1 - val2);
-        }
-
-        function calculateFQ401_24() {
-            const val1 = parseFloat(document.getElementById('fq401_24_1').value) || 0;
-            const val2 = parseFloat(document.getElementById('fq401_24_2').value) || 0;
-            document.getElementById('fq401_24_res').innerText = Math.abs(val1 - val2);
-        }
-
-        function calculateFQ402_24() {
-            const val1 = parseFloat(document.getElementById('fq402_24_1').value) || 0;
-            const val2 = parseFloat(document.getElementById('fq402_24_2').value) || 0;
-            document.getElementById('fq402_24_res').innerText = Math.abs(val1 - val2);
-        }
-
         function calculateAll() {
-            calculateFQ401_12();
-            calculateFQ402_12();
-            calculateFQ401_24();
-            calculateFQ402_24();
+            const fq401_12_1 = parseFloat(document.getElementById('fq401_12_1').value) || 0;
+            const fq401_12_2 = parseFloat(document.getElementById('fq401_12_2').value) || 0;
+            document.getElementById('fq401_12_res').innerText = Math.abs(fq401_12_1 - fq401_12_2);
+
+            const fq402_12_1 = parseFloat(document.getElementById('fq402_12_1').value) || 0;
+            const fq402_12_2 = parseFloat(document.getElementById('fq402_12_2').value) || 0;
+            document.getElementById('fq402_12_res').innerText = Math.abs(fq402_12_1 - fq402_12_2);
+
+            const fq401_24_1 = parseFloat(document.getElementById('fq401_24_1').value) || 0;
+            const fq401_24_2 = parseFloat(document.getElementById('fq401_24_2').value) || 0;
+            document.getElementById('fq401_24_res').innerText = Math.abs(fq401_24_1 - fq401_24_2);
+
+            const fq402_24_1 = parseFloat(document.getElementById('fq402_24_1').value) || 0;
+            const fq402_24_2 = parseFloat(document.getElementById('fq402_24_2').value) || 0;
+            document.getElementById('fq402_24_res').innerText = Math.abs(fq402_24_1 - fq402_24_2);
         }
 
         function saveAllToLocalStorage() {
@@ -505,108 +327,34 @@
                 const el = document.getElementById(id);
                 if (el) data[id] = el.value;
             });
-            localStorage.setItem('abuQir_unit31_data', JSON.stringify(data));
+            localStorage.setItem('abuQir_unit31_unified_app', JSON.stringify(data));
         }
 
-        function loadData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            let hasUrlData = false;
-
-            inputIds.forEach(id => {
-                if (urlParams.has(id)) {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.value = urlParams.get(id);
-                        hasUrlData = true;
-                    }
-                }
-            });
-
-            if (!hasUrlData) {
-                const saved = localStorage.getItem('abuQir_unit31_data');
-                if (saved) {
-                    try {
-                        const data = JSON.parse(saved);
-                        inputIds.forEach(id => {
-                            if (data[id] !== undefined && document.getElementById(id)) {
-                                document.getElementById(id).value = data[id];
-                            }
-                        });
-                    } catch(e) {
-                        console.error("Error loading saved data", e);
-                    }
-                }
-            }
-        }
-
-        function shareDataLink() {
-            saveAllToLocalStorage();
-            const params = new URLSearchParams();
-            
-            inputIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) params.set(id, el.value);
-            });
-
-            const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
-
-            if (navigator.share) {
-                navigator.share({
-                    title: 'منظومة بيانات الوحدة 31 - أبو قير للأسمدة',
-                    text: 'تقرير بيانات الوحدة 31 الأخير:',
-                    url: shareUrl
-                }).catch(err => console.log('Share canceled'));
-            } else {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    const msg = document.createElement('div');
-                    msg.className = 'fixed bottom-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 font-bold text-sm';
-                    msg.innerText = 'تم نسخ رابط التقرير المحتوي على أحدث البيانات بنجاح!';
-                    document.body.appendChild(msg);
-                    setTimeout(() => msg.remove(), 3000);
-                });
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('abuQir_unit31_unified_app');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    inputIds.forEach(id => {
+                        if (data[id] !== undefined && document.getElementById(id)) {
+                            document.getElementById(id).value = data[id];
+                        }
+                    });
+                } catch(e) {}
             }
         }
 
         function setAllToZero() {
-            previousBackup = {};
             inputIds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el) previousBackup[id] = el.value;
+                if (el) el.value = '';
             });
-
-            const undoBtn = document.getElementById('undoBtn');
-            undoBtn.disabled = false;
-            undoBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-sm flex items-center gap-2 text-sm";
-
-            inputIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = 0;
-            });
-
             calculateAll();
             saveAllToLocalStorage();
-        }
-
-        function restorePreviousState() {
-            if (!previousBackup) return;
-
-            inputIds.forEach(id => {
-                if (previousBackup[id] !== undefined && document.getElementById(id)) {
-                    document.getElementById(id].value = previousBackup[id];
-                }
-            });
-
-            calculateAll();
-            saveAllToLocalStorage();
-
-            const undoBtn = document.getElementById('undoBtn');
-            undoBtn.disabled = true;
-            undoBtn.className = "bg-gray-400 cursor-not-allowed text-white font-bold py-2 px-4 rounded-xl transition-all shadow-sm flex items-center gap-2 text-sm";
-            previousBackup = null;
         }
 
         window.onload = function() {
-            loadData();
+            loadFromLocalStorage();
             calculateAll();
 
             inputIds.forEach(id => {
