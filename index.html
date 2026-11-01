@@ -83,6 +83,11 @@
             border-color: #1b8a5a;
             box-shadow: 0 0 0 2px rgba(27, 138, 90, 0.2);
         }
+
+        /* Toast notification animation */
+        #toast {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
     </style>
 </head>
 
@@ -90,19 +95,31 @@
 
     <div class="w-full max-w-5xl h-full h-screen bg-white shadow-2xl border-0 flex flex-col justify-between overflow-hidden relative">
 
+        <!-- ================= Toast Notification ================= -->
+        <div id="toast" class="fixed top-3 left-1/2 -translate-x-1/2 bg-afc-navy text-white px-4 py-1.5 rounded shadow-lg text-xs font-bold z-50 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 border border-afc-green">
+            <svg class="w-4 h-4 text-afc-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span id="toastMsg">تم الحفظ بنجاح</span>
+        </div>
+
         <!-- ================= الشاشة الشاملة (صفحة واحدة لكل البيانات) ================= -->
         <div class="page-view active pt-1 px-2 pb-1 flex flex-col justify-between h-full">
             
             <!-- الهيدر المدمج (مرفوع للأعلى تماماً) -->
             <header class="bg-afc-navy text-white rounded px-2 py-1 shadow-sm border-b-2 border-afc-green flex items-center justify-between gap-1 shrink-0 mb-1">
                 <div class="flex items-center gap-1.5">
-                    <button onclick="setAllToZero()" title="تصفير جميع القيم" class="bg-red-600 hover:bg-red-700 active:scale-95 text-white font-black px-2 py-0.5 rounded transition shadow flex items-center gap-1 text-[11px] shrink-0">
+                    <button onclick="setAllToZero()" title="تصفير جميع القيم" class="bg-red-600 hover:bg-red-700 active:scale-95 text-white font-black px-2 py-0.5 rounded transition shadow flex items-center gap-1 text-[11px] shrink-0 cursor-pointer">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                         <span>تصفير</span>
                     </button>
-                    <span class="bg-afc-green text-white text-[10px] px-2 py-0.5 rounded font-black">شاملة (12H & 24H)</span>
+                    <button onclick="exportData()" title="نسخ أو تصدير البيانات" class="bg-afc-green hover:bg-emerald-700 active:scale-95 text-white font-black px-2 py-0.5 rounded transition shadow flex items-center gap-1 text-[11px] shrink-0 cursor-pointer">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                        </svg>
+                        <span>نسخ التقرير</span>
+                    </button>
+                    <span class="bg-afc-green text-white text-[10px] px-2 py-0.5 rounded font-black hidden sm:inline-block">شاملة (12H & 24H)</span>
                 </div>
 
                 <div class="flex items-center gap-1 text-right">
@@ -287,7 +304,7 @@
             <footer class="pt-0.5 mt-0.5 border-t border-gray-200 flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-1">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-[9px] text-gray-600 font-bold">الوحدة 31 - لوحة التحكم الموحدة</span>
+                    <span id="lastSavedText" class="text-[9px] text-gray-600 font-bold">الوحدة 31 - لوحة التحكم الموحدة</span>
                 </div>
                 <span class="text-[9px] text-gray-500 font-bold">شركة أبو قير للأسمدة</span>
             </footer>
@@ -302,6 +319,18 @@
             'fq401_12_1', 'fq401_12_2', 'fq402_12_1', 'fq402_12_2',
             'fq401_24_1', 'fq401_24_2', 'fq402_24_1', 'fq402_24_2'
         ];
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, 10px)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 0)';
+            }, 2000);
+        }
 
         function calculateAll() {
             const fq401_12_1 = parseFloat(document.getElementById('fq401_12_1').value) || 0;
@@ -328,6 +357,16 @@
                 if (el) data[id] = el.value;
             });
             localStorage.setItem('abuQir_unit31_unified_app', JSON.stringify(data));
+            localStorage.setItem('abuQir_unit31_last_saved', new Date().toLocaleTimeString('ar-EG'));
+            updateFooterTime();
+        }
+
+        function updateFooterTime() {
+            const savedTime = localStorage.getItem('abuQir_unit31_last_saved');
+            const footerText = document.getElementById('lastSavedText');
+            if (savedTime) {
+                footerText.innerText = `آخر حفظ: ${savedTime}`;
+            }
         }
 
         function loadFromLocalStorage() {
@@ -342,6 +381,7 @@
                     });
                 } catch(e) {}
             }
+            updateFooterTime();
         }
 
         function setAllToZero() {
@@ -351,6 +391,33 @@
             });
             calculateAll();
             saveAllToLocalStorage();
+            showToast('تم تصفير جميع القيم');
+        }
+
+        function exportData() {
+            let summary = "--- تقرير بيانات الوحدة 31 - شركة أبو قير للأسمدة ---\n";
+            summary += `حرارة الأمونيا: ${document.getElementById('tempAmmonia').value || 0}\n`;
+            summary += `كثافة الأمونيا: ${document.getElementById('densityAmmonia').value || 0}\n`;
+            summary += `حرارة الحامض: ${document.getElementById('tempAcid').value || 0}\n`;
+            summary += `تركيز الحامض: ${document.getElementById('concAcid').value || 0}\n`;
+            summary += `كثافة الحامض: ${document.getElementById('densityAcid').value || 0}\n`;
+            summary += `متوسط التركيز: ${document.getElementById('avgConc').value || 0}%\n`;
+            summary += `إنتاج FQ401 (12H): ${document.getElementById('fq401_12_res').innerText} m³\n`;
+            summary += `إنتاج FQ402 (12H): ${document.getElementById('fq402_12_res').innerText} m³\n`;
+            summary += `إنتاج FQ401 (24H): ${document.getElementById('fq401_24_res').innerText} m³\n`;
+            summary += `إنتاج FQ402 (24H): ${document.getElementById('fq402_24_res').innerText} m³\n`;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = summary;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('تم نسخ التقرير بنجاح!');
+            } catch (err) {
+                showToast('تعذر النسخ تلقائياً');
+            }
+            document.body.removeChild(textarea);
         }
 
         window.onload = function() {
